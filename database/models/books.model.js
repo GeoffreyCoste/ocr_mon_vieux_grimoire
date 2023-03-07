@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const bookSchema = mongoose.Schema({
+const booksSchema = mongoose.Schema({
     userId: {
         type: String,
         required: true
@@ -28,16 +28,27 @@ const bookSchema = mongoose.Schema({
     ratings: [{
         userId: {
             type: String,
-            required: true
+            required: true,
+            /* unique: true */ // Use unique ?
         },
         grade: {
             type: Number,
+            min: 1,
+            max: 5,
             required: true
         }
     }, ],
-    /* averageRating: {
+    averageRating: {
         type: Number,
-    } */ // To be reviewed
+        default: function () {
+            return Math.round(this.ratings.reduce((acc, rating) => acc + rating.grade, 0) / this.ratings.length);
+        }
+    }
 });
 
-module.exports = mongoose.model('Book', bookSchema);
+booksSchema.post('findOneAndUpdate', function (result) {
+    result.averageRating = Math.round(result.ratings.reduce((acc, rating) => acc + rating.grade, 0) / result.ratings.length);
+    result.save();
+});
+
+module.exports = mongoose.model('Books', booksSchema);

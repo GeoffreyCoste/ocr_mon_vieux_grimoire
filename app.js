@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const path = require('path');
 const dotenv = require('dotenv').config();
 const router = require('./routes');
 
@@ -25,5 +26,6 @@ app.use((req, res, next) => {
 });
 
 app.use(router);
+app.use('/images/', express.static(path.join(__dirname, 'images')));
 
 module.exports = app;
