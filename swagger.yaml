@@ -1,0 +1,438 @@
+openapi: 3.0.0
+info:
+  title: API Mon Vieux Grimoire
+  description: API Backend for 'Mon Vieux Grimoire' Website
+  version: 1.0.0
+servers:
+  - url: http://localhost:4000/api/
+paths:
+  /auth/signup:
+    post:
+      summary: Signup the user.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '201':
+          description: User account created
+        '400':
+          description: Email and password required
+        '500':
+          description: User account creation failed
+  /auth/login:
+    post:
+      summary: Log In the user.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: User authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userId:
+                    type: integer
+                    format: int64
+                    example: 1
+                  token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY1MTg3NDkzOSwiZXhwIjoxNjUxOTYxMzM5fQ.JGN1p8YIfR-M-5eQ-Ypy6Ima5cKA4VbfL2xMr2MgHm4
+        '404':
+          description: User not found
+        '401':
+          description: Invalid email and/or password
+  /books:
+    get:
+      summary: Returns all books
+      responses:
+        '200':
+          description: Returns an array of all books
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                      example: '6406f6584b79d53f436837c8'
+                    userId:
+                      type: string
+                      example: '6406f6584b79d53f436837c8'
+                    title:
+                      type: string
+                      example: 'Hello World'
+                    author:
+                      type: string
+                      example: 'John Doe'
+                    imageUrl:
+                      type: string
+                      example: 'http://localhost:4000/images/image_file.jpg'
+                    year:
+                      type: integer
+                      format: int64
+                      example: 1982
+                    genre:
+                      type: string
+                      example: 'Fiction'
+                    ratings:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          userId:
+                            type: string
+                            example: '6406f6584b79d53f436837c8'
+                          grade:
+                            type: integer
+                            format: int64
+                            example: 1
+                    averageRating:
+                      type: integer
+                      format: int64
+                      example: 1
+        '400':
+          description: Unexpected error
+    post:
+      summary: Create a new book
+      security:
+       - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                _id:
+                  type: string
+                userId:
+                  type: string
+                title:
+                  type: string
+                author:
+                  type: string
+                year:
+                  type: integer
+                  format: int64
+                imageUrl:
+                  type: string
+                  format: binary
+                genre:
+                  type: string
+                ratings:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      userId:
+                        type: string
+                      grade:
+                        type: integer
+                        format: int64
+      responses:
+        '201':
+          description: New book created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                    example: '6406f6584b79d53f436837c8'
+                  userId:
+                    type: string
+                    example: '6406f6584b79d53f436837c8'
+                  title:
+                    type: string
+                    example: 'Hello World'
+                  author:
+                    type: string
+                    example: 'John Doe'
+                  imageUrl:
+                    type: string
+                    example: 'http://localhost:4000/images/image_file.jpg'
+                  year:
+                    type: integer
+                    format: int64
+                    example: 1982
+                  genre:
+                    type: string
+                    example: 'Fiction'
+                  ratings:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        userId:
+                          type: string
+                          example: '6406f6584b79d53f436837c8'
+                        grade:
+                          type: integer
+                          format: int64
+                          example: 1
+                  averageRating:
+                    type: integer
+                    format: int64
+                    example: 1
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '500':
+          description: Unexpected error
+  /books/{id}:
+    get:
+      summary: Get one book depending on an id
+      responses:
+        '200':
+          description: Return book 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                    example: '6406f6584b79d53f436837c8'
+                  userId:
+                    type: string
+                    example: '6406f6584b79d53f436837c8'
+                  title:
+                    type: string
+                    example: 'Hello World'
+                  author:
+                    type: string
+                    example: 'John Doe'
+                  imageUrl:
+                    type: string
+                    example: 'http://localhost:4000/images/image_file.jpg'
+                  year:
+                    type: integer
+                    format: int64
+                    example: 1982
+                  genre:
+                    type: string
+                    example: 'Fiction'
+                  ratings:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        userId:
+                          type: string
+                          example: '6406f6584b79d53f436837c8'
+                        grade:
+                          type: integer
+                          format: int64
+                          example: 1
+                  averageRating:
+                    type: integer
+                    format: int64
+                    example: 1
+        '500':
+          description: Unexpected error
+    put:
+      summary: Update one book depending on an id
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: id of book to be updated
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      responses:
+        '200':
+          description: Book updated
+        '401':
+          description: Unauthorized
+        '500':
+          description: Unexpected error
+    delete:
+      summary: Delete one book depending on an id
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: id of book to be deleted
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      responses:
+        '200':
+          description: Book deleted
+        '401':
+          description: Unauthorized
+        '500':
+          description: Unexpected error
+  /books/{id}/rating:
+    post:
+      summary: Add new rating to existing book
+      security:
+       - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: id of book to add rating to
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                rating:
+                  type: integer
+                  format: int64
+      responses:
+        '201':
+          description: New rating added
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                      example: '6406f6584b79d53f436837c8'
+                    userId:
+                      type: string
+                      example: '6406f6584b79d53f436837c8'
+                    title:
+                      type: string
+                      example: 'Hello World'
+                    author:
+                      type: string
+                      example: 'John Doe'
+                    imageUrl:
+                      type: string
+                      example: 'http://localhost:4000/images/image_file.jpg'
+                    year:
+                      type: integer
+                      format: int64
+                      example: 1982
+                    genre:
+                      type: string
+                      example: 'Fiction'
+                    ratings:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          userId:
+                            type: string
+                            example: '6406f6584b79d53f436837c8'
+                          grade:
+                            type: integer
+                            format: int64
+                            example: 1
+                    averageRating:
+                      type: integer
+                      format: int64
+                      example: 1
+        '401':
+          description: Unauthorized
+        '500':
+          description: Unexpected error
+  /books/bestrating:
+    get:
+      summary: Get the 3 books with the best rating
+      responses:
+        '200':
+          description: Return an array of the 3 books with the best rating
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                      example: '6406f6584b79d53f436837c8'
+                    userId:
+                      type: string
+                      example: '6406f6584b79d53f436837c8'
+                    title:
+                      type: string
+                      example: 'Hello World'
+                    author:
+                      type: string
+                      example: 'John Doe'
+                    imageUrl:
+                      type: string
+                      example: 'http://localhost:4000/images/image_file.jpg'
+                    year:
+                      type: integer
+                      format: int64
+                      example: 1982
+                    genre:
+                      type: string
+                      example: 'Fiction'
+                    ratings:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          userId:
+                            type: string
+                            example: '6406f6584b79d53f436837c8'
+                          grade:
+                            type: integer
+                            format: int64
+                            example: 1
+                    averageRating:
+                      type: integer
+                      format: int64
+                      example: 1
+        '500':
+          description: Unexpected error
+components:
+  securitySchemes:
+   BearerAuth:
+     type: http
+     scheme: bearer
+securityDefinitions:
+  Bearer:
+    type: JWT
+    name: Authorization
+    in: header

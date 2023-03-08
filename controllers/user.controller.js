@@ -10,6 +10,11 @@ const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN;
 
 
 exports.signup = async (req, res, next) => {
+    if (!req.body.email || !req.body.password) {
+        return res.status(400).send({
+            message: "Email and password required"
+        });
+    }
     try {
         const body = req.body;
         const user = await createUser(body);
@@ -17,8 +22,8 @@ exports.signup = async (req, res, next) => {
             message: 'User created'
         });
     } catch (error) {
-        res.status(400).json({
-            error
+        res.status(500).json({
+            message: 'User account creation failed'
         });
     }
 };
@@ -49,8 +54,8 @@ exports.login = async (req, res, next) => {
                 })
             }
         } else {
-            res.status(401).json({
-                message: 'Invalid email and/or password'
+            res.status(404).json({
+                message: 'User not found'
             })
         }
     } catch (error) {

@@ -41,8 +41,8 @@ exports.deleteBook = async (id, userId) => {
             _id: id
         });
         if (book && book.userId == userId) {
-            const filename = book.imageUrl.split('/images/')[1];
-            fs.unlink(`images/${filename}`, async () => {
+            const filename = book.imageUrl.split('/public/images/')[1];
+            fs.unlink(`public/images/${filename}`, async () => {
                 await Books.deleteOne({
                     _id: id
                 });

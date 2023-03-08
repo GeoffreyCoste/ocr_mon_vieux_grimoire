@@ -12,7 +12,7 @@ const {
 exports.bookCreate = async (req, res, next) => {
     try {
         const id = req.auth.userId;
-        const url = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+        const url = `${req.protocol}://${req.get('host')}/public/images/${req.file.filename}`;
         const body = req.body;
         const newBook = await createNewBook(id, body, url);
         res.status(201).json({
@@ -31,7 +31,7 @@ exports.bookUpdate = async (req, res, next) => {
         const userId = req.auth.userId;
         const body = req.file ? {
             ...JSON.parse(req.body.book),
-            imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+            imageUrl: `${req.protocol}://${req.get('host')}/public/images/${req.file.filename}`
         } : {
             ...req.body
         }
@@ -81,7 +81,7 @@ exports.bookAddRating = async (req, res, next) => {
         const updatedBook = await addNewRating(id, userId, body);
         res.status(201).json(updatedBook);
     } catch (error) {
-        res.status(400).json({
+        res.status(401).json({
             error
         });
     }
