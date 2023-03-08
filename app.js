@@ -1,22 +1,15 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const path = require('path');
-const dotenv = require('dotenv').config();
 const router = require('./routes');
+require('./database'); // import mongoose client promise
 
-const DB_CONNECTION = process.env.DB_CONNECTION;
 
 const app = express();
 
-app.use(express.json());
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
 
-mongoose.set("strictQuery", false);
-mongoose.connect(DB_CONNECTION, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    })
-    .then(() => console.log('Successfully connected to MongoDB database.'))
-    .catch((error) => console.log('Connection to MongoDB database failed: ', error));
+
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -25,7 +18,8 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(router);
-app.use('/images/', express.static(path.join(__dirname, 'images')));
+app.use('/public/', express.static(path.join(__dirname, 'public')));
+app.use(express.json());
+app.use('/api', router);
 
 module.exports = app;

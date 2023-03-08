@@ -3,6 +3,7 @@ node_modules
 .env
 
 # exclude everything in folder images
-images/*
+public/images/*
 # exception to exclusion rule
-!images/.gitkeep
+!public/images/.gitkeep
+!public/images/Logo.png
