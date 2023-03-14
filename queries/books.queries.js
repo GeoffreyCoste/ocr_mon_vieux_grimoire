@@ -19,12 +19,25 @@ exports.updateBook = async (id, userId, body) => {
             _id: id
         });
         if (book && book.userId == userId) {
-            return Books.updateOne({
-                _id: id
-            }, {
-                ...body,
-                _id: id
-            })
+            if (!body.imageUrl) {
+                return Books.updateOne({
+                    _id: id
+                }, {
+                    ...body,
+                    _id: id
+                });
+            } else {
+                const filename = book.imageUrl.split('/public/images/')[1];
+                fs.unlink(`public/images/${filename}`, async () => {
+                    await Books.updateOne({
+                        _id: id
+                    }, {
+                        ...body,
+                        _id: id
+                    })
+                });
+                return;
+            }
         } else {
             throw Error();
         }

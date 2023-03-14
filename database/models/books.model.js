@@ -46,6 +46,7 @@ const booksSchema = mongoose.Schema({
     }
 });
 
+
 booksSchema.post('findOneAndUpdate', function (result) {
     result.averageRating = Math.round(result.ratings.reduce((acc, rating) => acc + rating.grade, 0) / result.ratings.length);
     result.save();

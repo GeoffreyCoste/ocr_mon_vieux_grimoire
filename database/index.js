@@ -7,7 +7,8 @@ mongoose.set("strictQuery", false);
 
 exports.clientPromise = mongoose.connect(DB_CONNECTION, {
         useNewUrlParser: true,
-        useUnifiedTopology: true
+        useUnifiedTopology: true,
+        ssl: true
     })
     .then(() => console.log('Successfully connected to MongoDB database.'))
     .catch((error) => console.log('Connection to MongoDB database failed: ', error));
