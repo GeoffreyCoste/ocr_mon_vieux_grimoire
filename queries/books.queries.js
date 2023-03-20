@@ -28,18 +28,17 @@ exports.updateBook = async (id, userId, body) => {
                 });
             } else {
                 const filename = book.imageUrl.split('/public/images/')[1];
-                fs.unlink(`public/images/${filename}`, async () => {
-                    await Books.updateOne({
-                        _id: id
-                    }, {
-                        ...body,
-                        _id: id
-                    })
+                fs.unlinkSync(`public/images/${filename}`);
+                await Books.updateOne({
+                    _id: id
+                }, {
+                    ...body,
+                    _id: id
                 });
                 return;
             }
         } else {
-            throw Error();
+            throw Error('Book update failed');
         }
     } catch (error) {
         throw ({

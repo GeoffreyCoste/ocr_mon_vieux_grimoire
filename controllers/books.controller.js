@@ -10,6 +10,9 @@ const {
 
 
 exports.bookCreate = async (req, res, next) => {
+    if (!req.body || !req.file) {
+        throw Error('Book creation failed, mandatory infos missing');
+    }
     try {
         const id = req.auth.userId;
         const url = `${req.protocol}://${req.get('host')}/public/images/${req.file.filename}`;

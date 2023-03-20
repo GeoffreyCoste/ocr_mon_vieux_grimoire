@@ -21,7 +21,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(morgan('combined', {
+app.use(morgan(':method / :status -  :url  - [:date[clf]]', {
     skip: (req, res) => res.statusCode < 400,
     stream: writeLogStream
 }));
