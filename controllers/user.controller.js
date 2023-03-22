@@ -10,12 +10,12 @@ const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN;
 
 
 exports.signup = async (req, res, next) => {
-    if (!req.body.email || !req.body.password) {
-        return res.status(400).send({
-            message: "Email and password required"
-        });
-    }
     try {
+        if (!req.body.email || !req.body.password) {
+            return res.status(400).send({
+                message: "Email and password required"
+            });
+        }
         const body = req.body;
         const user = await createUser(body);
         res.status(201).json({
