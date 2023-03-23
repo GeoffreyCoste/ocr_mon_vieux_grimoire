@@ -7,3 +7,6 @@ public/images/*
 # exception to exclusion rule
 !public/images/.gitkeep
 !public/images/Logo.png
+
+#exclude everything in folder logs
+utils/logs/*

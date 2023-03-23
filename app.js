@@ -7,7 +7,7 @@ require('./database'); // import mongoose client promise
 
 const app = express();
 
-const writeLogStream = fs.createWriteStream(path.join(__dirname, 'errors.log'), {
+const writeLogStream = fs.createWriteStream(path.join(__dirname, 'utils/logs/server.log'), {
     flags: 'a'
 }); // 'a' = append, 'w' = write (cf. fs.open documentation)
 

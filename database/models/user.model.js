@@ -14,7 +14,9 @@ const userSchema = mongoose.Schema({
     }
 });
 
-userSchema.plugin(uniqueValidator);
+userSchema.plugin(uniqueValidator, {
+    message: 'Email should be unique'
+});
 
 userSchema.statics.hashPassword = async (password) => {
     try {
