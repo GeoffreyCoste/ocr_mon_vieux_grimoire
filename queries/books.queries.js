@@ -19,24 +19,17 @@ exports.updateBook = async (id, userId, body) => {
             _id: id
         });
         if (book && book.userId == userId) {
-            if (!body.imageUrl) {
-                return Books.updateOne({
-                    _id: id
-                }, {
-                    ...body,
-                    _id: id
-                });
-            } else {
+            if (body.imageUrl) {
                 const filename = book.imageUrl.split('/public/images/')[1];
                 fs.unlinkSync(`public/images/${filename}`);
-                await Books.updateOne({
-                    _id: id
-                }, {
-                    ...body,
-                    _id: id
-                });
-                return;
             }
+            await Books.updateOne({
+                _id: id
+            }, {
+                ...body,
+                _id: id
+            });
+            return;
         } else {
             throw Error('Book update failed');
         }
@@ -60,7 +53,7 @@ exports.deleteBook = async (id, userId) => {
                 });
             });
         } else {
-            throw Error();
+            throw Error('Book deletion failed');
         }
     } catch (error) {
         throw ({

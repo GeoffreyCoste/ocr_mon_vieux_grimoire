@@ -7,7 +7,11 @@ exports.createUser = async (body) => {
             email: body.email,
             password: hashedPassword
         });
-        user.save();
+        user.save(function (err) {
+            if (err.errors.email) {
+                console.log(err.errors.email);
+            }
+        });
     } catch (error) {
         res.status(400).json({
             error

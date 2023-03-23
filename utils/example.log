@@ -1,0 +1,8 @@
+{
+  request: { method: 'POST', path: '/path' },
+  response: { status: 400 },
+  email: 'email@example.com',
+  level: 'error',
+  message: 'Error message',
+  timestamp: 'DD-MM-YYY HH:mm:ss'
+}
